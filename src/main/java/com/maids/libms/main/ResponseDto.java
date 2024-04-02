@@ -1,4 +1,4 @@
-package com.maids.libms.dto;
+package com.maids.libms.main.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
