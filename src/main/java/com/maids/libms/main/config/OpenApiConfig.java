@@ -1,4 +1,4 @@
-package com.maids.libms.config;
+package com.maids.libms.main.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;

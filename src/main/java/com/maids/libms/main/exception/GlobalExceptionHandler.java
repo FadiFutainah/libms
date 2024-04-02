@@ -1,7 +1,7 @@
-package com.maids.libms.exception;
+package com.maids.libms.main.exception;
 
 
-import com.maids.libms.dto.ResponseDto;
+import com.maids.libms.main.ResponseDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -48,8 +48,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseDto.exceptionResponse(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage());
     }
 
-    private String filterMessage(String message) {
+    String filterMessage(String message) {
         if (message.contains("Duplicate entry")) {
+            System.out.println(message);
             return "this entity already exists";
         }
         return message;

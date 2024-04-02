@@ -1,4 +1,4 @@
-package com.maids.libms.exception;
+package com.maids.libms.main.exception;
 
 public class CommonExceptions {
     public static class ResourceNotFoundException extends RuntimeException {
