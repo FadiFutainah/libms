@@ -10,6 +10,7 @@ import lombok.experimental.Accessors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -23,7 +24,7 @@ import java.util.List;
 public class ResponseDto<T> {
     public T data;
     public String message;
-    public List<String> errors;
+    public List<String> errors = new ArrayList<>();
 
     final static HttpStatus defaultStatus = HttpStatus.OK;
 

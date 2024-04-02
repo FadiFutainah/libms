@@ -23,7 +23,6 @@ public class Book extends BaseEntity<Integer> {
     @Column(nullable = false)
     String title;
 
-    @NotNull
     @ManyToOne @JoinColumn(name = "author_id")
     @JsonIgnoreProperties(value = "books")
     Author author;
