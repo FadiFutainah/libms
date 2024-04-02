@@ -50,6 +50,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     String filterMessage(String message) {
         if (message.contains("Duplicate entry")) {
+            System.out.println("- - - - - - - - - - - -");
             System.out.println(message);
             return "this entity already exists";
         }

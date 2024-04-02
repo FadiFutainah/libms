@@ -11,16 +11,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Builder
-@Getter
-@Setter
-@Accessors(chain = true)
-@NoArgsConstructor
-@AllArgsConstructor
+@Getter @Setter
+@Builder @Accessors(chain = true)
+@NoArgsConstructor @AllArgsConstructor
 public class Author extends BaseEntity<Integer> {
     @Column(nullable = false, unique = true)
     String name;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "author", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties(value = "author")
     Set<Book> books = new HashSet<>();
 }
