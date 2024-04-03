@@ -1,6 +1,6 @@
 package com.maids.libms.author;
 
-import com.maids.libms.main.CrudService;
+import com.maids.libms.main.service.CrudService;
 import org.springframework.stereotype.Service;
 
 @Service

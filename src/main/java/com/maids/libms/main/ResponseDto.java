@@ -2,10 +2,7 @@ package com.maids.libms.main;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,13 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@Getter
-@Setter
-@Accessors(chain = true, fluent = true)
-@NoArgsConstructor
-@AllArgsConstructor
-@JsonInclude
-@JsonIgnoreProperties(ignoreUnknown = true)
+@Getter @Setter
+@NoArgsConstructor @AllArgsConstructor
+@Builder @Accessors(chain = true, fluent = true)
+@JsonInclude @JsonIgnoreProperties(ignoreUnknown = true)
 public class ResponseDto<T> {
     public T data;
     public String message;

@@ -1,12 +1,12 @@
-package com.maids.libms.contact;
+package com.maids.libms.patron;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.maids.libms.main.BaseEntity;
-import com.maids.libms.patron.Patron;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.Accessors;
+import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Getter @Setter
@@ -22,6 +22,7 @@ public class Contact extends BaseEntity<Integer> {
     String url;
 
     @JsonIgnoreProperties(value = "contacts")
-    @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name = "patron_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patron_id")
     Patron patron;
 }

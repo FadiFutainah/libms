@@ -1,5 +1,6 @@
 package com.maids.libms.main;
 
+import com.maids.libms.main.service.CrudService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

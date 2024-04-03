@@ -1,5 +1,7 @@
-package com.maids.libms.main;
+package com.maids.libms.main.service;
 
+import com.maids.libms.main.BaseEntity;
+import com.maids.libms.main.ResponseDto;
 import com.maids.libms.main.exception.CommonExceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

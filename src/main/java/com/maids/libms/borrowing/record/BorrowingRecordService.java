@@ -3,7 +3,7 @@ package com.maids.libms.borrowing.record;
 import com.maids.libms.book.Book;
 import com.maids.libms.book.BookRepository;
 import com.maids.libms.book.BookService;
-import com.maids.libms.main.CrudService;
+import com.maids.libms.main.service.CrudService;
 import com.maids.libms.main.ResponseDto;
 import com.maids.libms.main.exception.CommonExceptions;
 import com.maids.libms.patron.Patron;

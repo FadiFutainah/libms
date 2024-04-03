@@ -19,12 +19,12 @@ import static org.springframework.security.config.http.SessionCreationPolicy.STA
 public class SecurityConfiguration {
     private static final String[] WHITE_LIST_URL = {
             "**", // for testing purposes
-            "/v1/api/auth/**",
+            "/api/auth/**",
             "/api-docs/**",
-            "/v1/swagger-resources",
-            "/v1/swagger-resources/**",
-            "/v1/swagger-ui/**",
-            "/v1/swagger-ui.html"
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html"
     };
 
     @Bean

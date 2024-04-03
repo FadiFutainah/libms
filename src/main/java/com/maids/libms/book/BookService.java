@@ -2,7 +2,7 @@ package com.maids.libms.book;
 
 import com.maids.libms.author.Author;
 import com.maids.libms.author.AuthorService;
-import com.maids.libms.main.CrudService;
+import com.maids.libms.main.service.CrudService;
 import com.maids.libms.main.ResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +20,7 @@ public class BookService extends CrudService<Book, Integer> {
     @Override
     public ResponseEntity<ResponseDto<Book>> create(Book resource) {
         Author author = authorService.lookupResource(resource.authorId);
-
         resource.setAuthor(author);
-
         return super.create(resource);
     }
 }
