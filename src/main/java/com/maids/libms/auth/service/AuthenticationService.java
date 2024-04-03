@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +28,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -42,6 +45,9 @@ public class AuthenticationService {
     final AuthenticationManager authenticationManager;
     final EmailService emailService;
 
+    @Value("${application.security.activation-key.duration.min}")
+    long activationKeyDurationMinutes;
+
     private final Logger log = LoggerFactory.getLogger(AuthenticationService.class);
 
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -55,6 +61,7 @@ public class AuthenticationService {
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         Patron patron = modelMapper.map(request, Patron.class);
         patron.setActivationKey(generateActivationKey());
+        patron.setActivationKeyCreation(Instant.now());
         patron.setRole(PATRON);
         Patron savedPatron = patronService.create(patron).getBody().data();
         emailService.sendVerificationEmail(savedPatron.getEmail(), savedPatron.getActivationKey());
@@ -68,6 +75,7 @@ public class AuthenticationService {
         }
         Patron patron = lookupPatron.get();
         patron.setActivationKey(generateActivationKey());
+        patron.setActivationKeyCreation(Instant.now());
         Patron savedPatron = patronService.create(patron).getBody().data();
         emailService.sendVerificationEmail(savedPatron.getEmail(), savedPatron.getActivationKey());
         return ResponseDto.response(null, HttpStatus.OK, "Verification code sent successfully");
@@ -88,6 +96,10 @@ public class AuthenticationService {
             log.info("invalid activation code attempt: session-" + request.getSession()
                     + ", email-" + patron.getEmail());
             throw new CommonExceptions.UnauthorizedException("Invalid activation code");
+        }
+        Duration timeDuration = Duration.between(patron.getActivationKeyCreation(), Instant.now());
+        if (timeDuration.compareTo(Duration.ofMinutes(activationKeyDurationMinutes)) > 0) {
+            throw new CommonExceptions.UnauthorizedException("Expired activation code");
         }
         patron.setActivated(true);
         patronRepository.save(patron);

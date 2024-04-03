@@ -15,10 +15,8 @@ import lombok.experimental.Accessors;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.Instant;
+import java.util.*;
 
 @Entity
 @Getter @Setter
@@ -48,6 +46,9 @@ public class Patron extends BaseEntity<Integer> implements UserDetails {
     @JsonIgnore
     @Column(length = 20)
     String activationKey;
+
+    @JsonIgnore
+    Instant activationKeyCreation;
 
     @Email
     @Column(unique = true, nullable = false)
