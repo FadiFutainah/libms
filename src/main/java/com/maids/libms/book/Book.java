@@ -4,14 +4,15 @@ package com.maids.libms.book;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.maids.libms.author.Author;
+import com.maids.libms.borrowing.record.BorrowingRecord;
 import com.maids.libms.main.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.Accessors;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Entity
@@ -39,4 +40,12 @@ public class Book extends BaseEntity<Integer> {
     String isbn;
 
     int numOfPages;
+
+    @NotNull
+    @Column(nullable = false)
+    int quantity;
+
+    @OneToMany(fetch =  FetchType.EAGER, mappedBy = "book")
+    @JsonIgnoreProperties(value = "book")
+    Set<BorrowingRecord> borrowingRecords = new HashSet<>();
 }

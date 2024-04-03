@@ -9,7 +9,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.lang.reflect.Field;
 import java.util.List;
 
 public class CrudService<Entity extends BaseEntity<Id>, Id> {
@@ -55,7 +54,7 @@ public class CrudService<Entity extends BaseEntity<Id>, Id> {
 
     public ResponseEntity<ResponseDto<Entity>> update(Id id, Entity resource) {
         Entity entity = lookupResource(id);
-        log.info("created new resource " + entity.getClass());
+        log.info("updated the resource " + entity.getClass());
         return ResponseDto.response(jpaRepository.save(resource));
     }
 }
