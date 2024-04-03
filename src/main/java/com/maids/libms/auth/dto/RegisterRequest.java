@@ -38,7 +38,4 @@ public class RegisterRequest {
     String password;
 
     Set<Contact> contacts = new HashSet<>();
-
-    @Enumerated(EnumType.STRING)
-    Role role;
 }

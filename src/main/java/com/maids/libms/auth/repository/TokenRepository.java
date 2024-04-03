@@ -12,8 +12,8 @@ import java.util.Optional;
 public interface TokenRepository extends JpaRepository<Token, Integer> {
 
     @Query(value = """
-            select t from Token t inner join Client u\s
-            on t.client.id = u.id\s
+            select t from Token t inner join Patron u\s
+            on t.patron.id = u.id\s
             where u.id = :id and (t.expired = false or t.revoked = false)\s
             """)
     List<Token> findAllValidTokenByPatron(Integer id);

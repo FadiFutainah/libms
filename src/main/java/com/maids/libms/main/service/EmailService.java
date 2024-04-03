@@ -13,17 +13,19 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class EmailService {
     private final JavaMailSender javaMailSender;
-    private final Logger log = LoggerFactory.getLogger(EmailService.class);
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
+    @Async
     public void sendVerificationEmail(String to, String verificationCode) {
         String subject = "Backend Quiz Verification Email";
         String body = "Your verification code is " + verificationCode;
+        log.info("sending email " + to);
         sendEmail(to, subject, body);
+        log.info("Email sent successfully" + to);
     }
 
     @Async
     public void sendEmail(String to, String subject, String body) {
-        log.info("sending email " + to);
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(to);
         mailMessage.setSubject(subject);

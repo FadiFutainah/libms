@@ -21,6 +21,3 @@ spring:
     username: libmsdev
     password: 123123
 
-  mail:
-    username: 'fadiftenaft@gmail.com'
-    password: ''

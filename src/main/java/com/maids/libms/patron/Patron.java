@@ -43,11 +43,11 @@ public class Patron extends BaseEntity<Integer> implements UserDetails {
     String mobileNumber;
 
     @Column(nullable = false)
-    private boolean activated = false;
+    Boolean activated = false;
 
     @JsonIgnore
     @Column(length = 20)
-    private String activationKey;
+    String activationKey;
 
     @Email
     @Column(unique = true, nullable = false)
@@ -61,7 +61,7 @@ public class Patron extends BaseEntity<Integer> implements UserDetails {
     Role role;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @OneToMany(mappedBy = "client", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "patron", cascade = CascadeType.ALL)
     List<Token> tokens;
 
     @Override

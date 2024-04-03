@@ -16,7 +16,7 @@ import static com.maids.libms.auth.enums.Permission.*;
 @RequiredArgsConstructor
 public enum Role {
 
-    CLIENT(Collections.emptySet()),
+    PATRON(Collections.emptySet()),
     ADMIN(
             Set.of(ADMIN_READ, ADMIN_UPDATE, ADMIN_DELETE, ADMIN_CREATE)
     );

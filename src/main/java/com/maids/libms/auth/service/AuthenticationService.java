@@ -1,14 +1,15 @@
 package com.maids.libms.auth.service;
 
-import com.maids.libms.auth.model.Token;
-import com.maids.libms.auth.repository.TokenRepository;
 import com.maids.libms.auth.dto.*;
 import com.maids.libms.auth.enums.TokenType;
-import com.maids.libms.main.service.EmailService;
+import com.maids.libms.auth.model.Token;
+import com.maids.libms.auth.repository.TokenRepository;
 import com.maids.libms.main.ResponseDto;
 import com.maids.libms.main.exception.CommonExceptions;
+import com.maids.libms.main.service.EmailService;
 import com.maids.libms.patron.Patron;
 import com.maids.libms.patron.PatronRepository;
+import com.maids.libms.patron.PatronService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +17,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,12 +28,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Optional;
+
+import static com.maids.libms.auth.enums.Role.PATRON;
 
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
     final TokenRepository tokenRepository;
     final PatronRepository patronRepository;
+    final PatronService patronService;
     final JwtService jwtService;
     final AuthenticationManager authenticationManager;
     final EmailService emailService;
@@ -41,24 +47,44 @@ public class AuthenticationService {
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     ModelMapper modelMapper = new ModelMapper();
 
-    public ResponseEntity<ResponseDto<String>> register(RegisterRequest request) {
+    public ResponseEntity<ResponseDto<Patron>> register(RegisterRequest request) {
+        Optional<Patron> lookupPatron = patronRepository.findByEmail(request.getEmail());
+        if (lookupPatron.isPresent()) {
+            throw new CommonExceptions.BadRequestException("Email Already exist");
+        }
         request.setPassword(passwordEncoder.encode(request.getPassword()));
-        var patron = modelMapper.map(request, Patron.class);
+        Patron patron = modelMapper.map(request, Patron.class);
         patron.setActivationKey(generateActivationKey());
-        var savedPatron = patronRepository.save(patron);
+        patron.setRole(PATRON);
+        Patron savedPatron = patronService.create(patron).getBody().data();
         emailService.sendVerificationEmail(savedPatron.getEmail(), savedPatron.getActivationKey());
-        return ResponseDto.response("Verification code sent successfully");
+        return ResponseDto.response(savedPatron, HttpStatus.OK, "Verification code sent successfully");
+    }
+
+    public ResponseEntity<ResponseDto<Object>> sendVerificationCode(SendVerificationDto sendVerificationDto) {
+        Optional<Patron> lookupPatron = patronRepository.findByEmail(sendVerificationDto.getEmail());
+        if (lookupPatron.isEmpty()) {
+            throw new CommonExceptions.ResourceNotFoundException("Email does not exist, please register first");
+        }
+        Patron patron = lookupPatron.get();
+        patron.setActivationKey(generateActivationKey());
+        Patron savedPatron = patronService.create(patron).getBody().data();
+        emailService.sendVerificationEmail(savedPatron.getEmail(), savedPatron.getActivationKey());
+        return ResponseDto.response(null, HttpStatus.OK, "Verification code sent successfully");
     }
 
     @Transactional
     public ResponseEntity<ResponseDto<VerifyResponse>> verify(
-            VerifyRequest requestBody,
+            VerifyRequest verifyRequest,
             HttpServletRequest request,
             HttpServletResponse response
     ) {
-        String refreshToken = getRefreshTokenFromAuthHeader(request);
-        Patron patron = getPatronFromRefreshToken(refreshToken);
-        if (!Objects.equals(requestBody.getCode(), patron.getActivationKey())) {
+        Optional<Patron> lookupPatron = patronRepository.findByEmail(verifyRequest.getEmail());
+        if (lookupPatron.isEmpty()) {
+            throw new CommonExceptions.ResourceNotFoundException("Email does not exist");
+        }
+        Patron patron = lookupPatron.get();
+        if (!Objects.equals(verifyRequest.getCode(), patron.getActivationKey())) {
             log.info("invalid activation code attempt: session-" + request.getSession()
                     + ", email-" + patron.getEmail());
             throw new CommonExceptions.UnauthorizedException("Invalid activation code");
@@ -73,7 +99,7 @@ public class AuthenticationService {
                 .accessToken(jwtToken)
                 .refreshToken(newRefreshToken)
                 .build();
-        return ResponseDto.response(data);
+        return ResponseDto.response(data, HttpStatus.OK, "Account verified successfully");
     }
 
     @Transactional

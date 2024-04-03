@@ -22,7 +22,7 @@ public class ApplicationAuditAware implements AuditorAware<Integer> {
             return Optional.empty();
         }
 
-        Patron clientPrincipal = (Patron) authentication.getPrincipal();
-        return Optional.ofNullable(clientPrincipal.getId());
+        Patron patronPrincipal = (Patron) authentication.getPrincipal();
+        return Optional.ofNullable(patronPrincipal.getId());
     }
 }

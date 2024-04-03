@@ -3,6 +3,7 @@ package com.maids.libms.auth.controller;
 import com.maids.libms.auth.dto.*;
 import com.maids.libms.auth.service.AuthenticationService;
 import com.maids.libms.main.ResponseDto;
+import com.maids.libms.patron.Patron;
 import com.maids.libms.patron.PatronService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,14 +21,21 @@ import java.io.IOException;
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
-    final AuthenticationService service;
+    final AuthenticationService authenticationService;
     final PatronService patronService;
 
     @PostMapping("/register")
-    public ResponseEntity<ResponseDto<String>> register(
+    public ResponseEntity<ResponseDto<Patron>> register(
             @Valid @RequestBody RegisterRequest request
     ) {
-        return service.register(request);
+        return authenticationService.register(request);
+    }
+
+    @PostMapping("/send-verification-code")
+    public ResponseEntity<ResponseDto<Object>> sendVerificationCode(
+            @Valid @RequestBody SendVerificationDto sendVerificationDto
+    ) {
+        return authenticationService.sendVerificationCode(sendVerificationDto);
     }
 
     @PostMapping("/verify")
@@ -36,14 +44,14 @@ public class AuthenticationController {
             HttpServletResponse response,
             @Valid @RequestBody VerifyRequest requestBody
     ) {
-        return service.verify(requestBody, request, response);
+        return authenticationService.verify(requestBody, request, response);
     }
 
     @PostMapping("/login")
     public ResponseEntity<ResponseDto<LoginResponse>> authenticate(
             @RequestBody @Valid LoginRequest request
     ) {
-        return service.login(request);
+        return authenticationService.login(request);
     }
 
     @PostMapping("/refresh-token")
@@ -51,6 +59,6 @@ public class AuthenticationController {
             HttpServletRequest request,
             HttpServletResponse response
     ) throws IOException {
-        return service.refreshToken(request, response);
+        return authenticationService.refreshToken(request, response);
     }
 }
