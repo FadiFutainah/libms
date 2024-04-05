@@ -5,6 +5,7 @@ import com.maids.libms.main.ResponseDto;
 import com.maids.libms.main.exception.CommonExceptions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -34,8 +35,16 @@ public class CrudService<Entity extends BaseEntity<Id>, Id> {
     }
 
     public ResponseEntity<ResponseDto<Page<Entity>>> fetch(Pageable pageable) {
-        Page<Entity> page = jpaRepository.findAll(pageable);
-        return ResponseDto.response(page);
+        return ResponseDto.response(jpaRepository.findAll(pageable));
+    }
+
+    @Cacheable(value = "pageCache", key = "'books_' + #pageable.getPageNumber()")
+    public Page<Entity> getPage(Pageable pageable) {
+        return jpaRepository.findAll(pageable);
+    }
+
+    public ResponseEntity<ResponseDto<Page<Entity>>> fetchCached(Pageable pageable) {
+        return ResponseDto.response(getPage(pageable));
     }
 
     public ResponseEntity<ResponseDto<Entity>> fetch(Id id) {
