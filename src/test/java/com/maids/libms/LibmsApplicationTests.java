@@ -37,7 +37,8 @@ class LibmsApplicationTests extends BaseTestUseCases {
         try {
             MockHttpServletRequestBuilder requestBuilder = get("/api/books")
                     .param("page", "0")
-                    .param("size", "10");
+                    .param("size", "10")
+                    .header("Authorization", "Bearer " + accessToken);
             mockMvc.perform(requestBuilder);
         } catch (Exception e) {
             log.error(e.toString());
