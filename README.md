@@ -24,6 +24,8 @@ docker run -p 8080:8080 my-spring-app
 
 You can interact with the API using Swagger UI. Access the Swagger URL at http://localhost:8080/swagger-ui.html after starting the application.
 
+Or you can interact with the API using Postman, Access the postman collection in [docs/postman-collection.json](docs/postman-collection.json)
+
 ## How to Add Bearer JWT Token to Requests
 
 To add a Bearer JWT token to the header of your requests, include the following header:
@@ -83,5 +85,5 @@ This command will execute all the unit tests in your project.
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details.
 ```

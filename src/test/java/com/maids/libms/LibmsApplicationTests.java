@@ -2,6 +2,7 @@ package com.maids.libms;
 
 
 import com.maids.libms.book.BookService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,14 +18,20 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @SpringBootTest
 @AutoConfigureMockMvc
-class LibmsApplicationTests {
+class LibmsApplicationTests extends BaseTestUseCases {
     @MockBean
     BookService bookService;
-
+    private String accessToken;
     @Autowired
     private MockMvc mockMvc;
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+
+    @BeforeEach
+    public void setup() throws Exception {
+        accessToken = super.authenticate(mockMvc);
+    }
 
     public void fetchBooks() {
         try {
@@ -35,14 +42,6 @@ class LibmsApplicationTests {
         } catch (Exception e) {
             log.error(e.toString());
         }
-    }
-
-    public double measureExecutionTime(Runnable function) {
-        long startTime = System.nanoTime();
-        function.run();
-        long endTime = System.nanoTime();
-        long executionTimeNano = endTime - startTime;
-        return executionTimeNano / 1_000_000_000.0;
     }
 
     @Test
