@@ -28,7 +28,7 @@ class LibmsApplicationTests {
 
     public void fetchBooks() {
         try {
-            MockHttpServletRequestBuilder requestBuilder = get("/items")
+            MockHttpServletRequestBuilder requestBuilder = get("/api/books")
                     .param("page", "0")
                     .param("size", "10");
             mockMvc.perform(requestBuilder);
@@ -51,7 +51,7 @@ class LibmsApplicationTests {
         double duration1 = measureExecutionTime(this::fetchBooks);
         double duration2 = measureExecutionTime(this::fetchBooks);
         log.info("The service for the first call takes: " + duration1);
-        log.info("The service for the first call takes: " + duration2);
+        log.info("The service for the second call takes: " + duration2);
         assertThat(duration1).isGreaterThan(duration2);
     }
 }
