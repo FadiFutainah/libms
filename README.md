@@ -1,4 +1,3 @@
-```markdown
 # Spring Boot Application README
 
 ## How to Run the Application using Maven
@@ -84,4 +83,3 @@ This command will execute all the unit tests in your project.
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE) file for details.
-```
