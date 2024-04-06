@@ -16,6 +16,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 import static com.maids.libms.auth.enums.Role.ADMIN;
+import static com.maids.libms.auth.enums.Role.PATRON;
 import static org.springframework.http.HttpMethod.*;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
@@ -45,13 +46,13 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(req ->
                         req.requestMatchers(WHITE_LIST_URL)
                                 .permitAll()
-                                .requestMatchers("/api/patrons/**").hasAnyRole(ADMIN.name())
-                                .requestMatchers(POST, "/api/books/**").hasAnyRole(ADMIN.name())
-                                .requestMatchers(PUT, "/api/books/**").hasAnyRole(ADMIN.name())
-                                .requestMatchers(DELETE, "/api/books/**").hasAnyRole(ADMIN.name())
-                                .requestMatchers(POST,"/api/authors/**").hasAnyRole(ADMIN.name())
-                                .requestMatchers(PUT,"/api/authors/**").hasAnyRole(ADMIN.name())
-                                .requestMatchers(DELETE,"/api/authors/**").hasAnyRole(ADMIN.name())
+                                .requestMatchers("/api/patrons/**").hasAnyRole(ADMIN.name(), PATRON.name())
+                                .requestMatchers(POST, "/api/books/**").hasAnyRole(ADMIN.name(), PATRON.name())
+                                .requestMatchers(PUT, "/api/books/**").hasAnyRole(ADMIN.name(), PATRON.name())
+                                .requestMatchers(DELETE, "/api/books/**").hasAnyRole(ADMIN.name(), PATRON.name())
+                                .requestMatchers(POST, "/api/authors/**").hasAnyRole(ADMIN.name(), PATRON.name())
+                                .requestMatchers(PUT, "/api/authors/**").hasAnyRole(ADMIN.name(), PATRON.name())
+                                .requestMatchers(DELETE, "/api/authors/**").hasAnyRole(ADMIN.name(), PATRON.name())
                                 .anyRequest()
                                 .authenticated()
                 )

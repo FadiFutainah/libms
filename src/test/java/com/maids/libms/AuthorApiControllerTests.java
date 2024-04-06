@@ -1,6 +1,5 @@
 package com.maids.libms;
 
-import com.maids.libms.book.BookService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
@@ -8,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -17,8 +15,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class AuthorApiControllerTests extends BaseTestUseCases {
-    @MockBean
-    BookService bookService;
+
     @Autowired
     private MockMvc mockMvc;
     private String accessToken;
@@ -32,11 +29,53 @@ public class AuthorApiControllerTests extends BaseTestUseCases {
 
     @Test
     public void testCreateAuthor() throws Exception {
-        String requestBody = "{\"name\": \"John Doe\"}";
+        String requestBody = "{\"name\": \"Fadi Futainah\"}";
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/api/author")
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/authors")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(requestBody))
+                        .content(requestBody)
+                        .header("Authorization", "Bearer " + accessToken)
+                )
                 .andExpect(MockMvcResultMatchers.status().isCreated());
+    }
+
+
+    @Test
+    public void testGetAuthorById() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/authors/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + accessToken)
+                )
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void testGetAllAuthors() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/authors")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + accessToken)
+                )
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void testUpdateAuthor() throws Exception {
+        String requestBody = "{\"name\": \"Yanni2\"}";
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/authors/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(requestBody)
+                        .header("Authorization", "Bearer " + accessToken)
+                )
+                .andExpect(MockMvcResultMatchers.status().isOk());
+    }
+
+    @Test
+    public void testDeleteAuthor() throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/authors/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + accessToken)
+                )
+                .andExpect(MockMvcResultMatchers.status().isOk());
     }
 }

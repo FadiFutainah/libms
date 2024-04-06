@@ -53,7 +53,7 @@ public class CrudService<Entity extends BaseEntity<Id>, Id> {
 
     public ResponseEntity<ResponseDto<Entity>> create(Entity resource) {
         log.info("created new resource " + resource.getClass());
-        return ResponseDto.response(jpaRepository.save(resource));
+        return ResponseDto.response(jpaRepository.save(resource), HttpStatus.CREATED);
     }
 
     public ResponseEntity<ResponseDto<String>> delete(Id id) {
