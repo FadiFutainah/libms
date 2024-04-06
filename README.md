@@ -1,5 +1,3 @@
-Here's an updated version of your `README.md` file with the additional sections for running Redis, running tests, and including the MIT license:
-
 ```markdown
 # Spring Boot Application README
 
