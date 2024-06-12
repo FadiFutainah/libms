@@ -10,8 +10,8 @@ FROM public.ecr.aws/amazoncorretto/amazoncorretto:21
 
 WORKDIR /app
 
-COPY --from=build /app/target/maids-0.0.1-SNAPSHOT.jar maids.jar
+COPY --from=build /app/target/libms-0.0.1-SNAPSHOT.jar libms.jar
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "maids.jar"]
+CMD ["java", "-jar", "libms.jar"]

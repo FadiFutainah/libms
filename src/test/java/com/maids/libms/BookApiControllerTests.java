@@ -52,7 +52,7 @@ public class BookApiControllerTests extends BaseTestUseCases {
 
     @Test
     public void testCreateBook() throws Exception {
-        String requestBody = "{\"title\": \"title\", \"author_id\": 1, \"publicationYear\": 0, \"isbn\": \"string\", \"numOfPages\": 0, \"quantity\": 0}";
+        String requestBody = "{\"title\": \"title\", \"authorId\": \"1\", \"publicationYear\": 0, \"isbn\": \"string\", \"numOfPages\": 0, \"quantity\": 0}";
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/books")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -82,7 +82,7 @@ public class BookApiControllerTests extends BaseTestUseCases {
 
     @Test
     public void testUpdateBook() throws Exception {
-        String requestBody = "{\"title\": \"title\", \"author_id\": 1, \"publicationYear\": 0, \"isbn\": \"string\", \"numOfPages\": 0, \"quantity\": 0}";
+        String requestBody = "{\"title\": \"title\", \"authorId\": 1, \"publicationYear\": 0, \"isbn\": \"string\", \"numOfPages\": 0, \"quantity\": 0}";
 
         mockMvc.perform(MockMvcRequestBuilders.put("/api/books/1")
                         .contentType(MediaType.APPLICATION_JSON)

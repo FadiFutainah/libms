@@ -18,6 +18,8 @@ public class Author extends BaseEntity<Integer> {
     @Column(nullable = false, unique = true)
     String name;
 
+    Integer age;
+
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "author", cascade = CascadeType.ALL)
     @JsonIgnoreProperties(value = "author")
     Set<Book> books = new HashSet<>();

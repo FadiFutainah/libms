@@ -12,9 +12,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -35,7 +35,7 @@ class LibmsApplicationTests extends BaseTestUseCases {
 
     public void fetchBooks() {
         try {
-            MockHttpServletRequestBuilder requestBuilder = get("/api/books")
+            MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get("/api/books")
                     .param("page", "0")
                     .param("size", "10")
                     .header("Authorization", "Bearer " + accessToken);
